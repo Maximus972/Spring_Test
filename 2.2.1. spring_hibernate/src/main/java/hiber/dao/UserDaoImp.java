@@ -4,11 +4,13 @@ import hiber.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImp implements UserDao {
 
    @Autowired
@@ -26,4 +28,11 @@ public class UserDaoImp implements UserDao {
       return query.getResultList();
    }
 
+   @Override
+   public User findUserByCar(String model, int series) {
+      TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("from User where model = :model and series = :series");
+      query.setParameter("model", model);
+      query.setParameter("series", Integer.valueOf(series).toString());
+      return query.getSingleResult();
+   }
 }
