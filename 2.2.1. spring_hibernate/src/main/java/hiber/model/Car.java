@@ -2,8 +2,13 @@ package hiber.model;
 
 import javax.persistence.*;
 
-@Embeddable
+@Entity
+@Table(name = "cars")
 public class Car {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "model")
     private String model;
@@ -11,7 +16,9 @@ public class Car {
     @Column(name = "series")
     private int series;
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Car() {}
     public Car(String model, int series) {
